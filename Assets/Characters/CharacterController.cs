@@ -104,8 +104,11 @@ namespace SandboxMoba.Characters
 
         public override void Jump()
         {
-            _jumpSignalReceived = true;
-            _animator.SetIsJumping(true);
+            if (_isOnGround)
+            {
+                _jumpSignalReceived = true;
+                _animator.SetIsJumping(true);
+            }
         }
 
         private Vector2 calculateGroundSpeed()
