@@ -9,6 +9,7 @@ namespace SandboxMoba.Characters
         [SerializeField] private AbstractCharacterAnimator _animator;
         [SerializeField] private AbstractCameraController _cameraController;
         [SerializeField] private Sensor _groundSensor;
+        [SerializeField] private Sensor _ceilingSensor;
         [SerializeField] private Rigidbody _rigidbody;
 
         [SerializeField] private float _jumpForce = 5f;
@@ -19,11 +20,7 @@ namespace SandboxMoba.Characters
         private Vector2 _targetSpeedDir;
         private bool _jumpSignalReceived;
         private bool _isOnGround;
-
-        public void Construct(AbstractCharacterAnimator abstractCharacterAnimator) 
-        {
-            this._animator = abstractCharacterAnimator ?? throw new ArgumentNullException(nameof(abstractCharacterAnimator));
-        }
+        private bool _isCeiled;
 
         public override void Rotate(Vector2 angles)
         {
@@ -38,10 +35,19 @@ namespace SandboxMoba.Characters
 
         private void FixedUpdate()
         {
+            handleCeiled();
             Vector2 groundSpeed = calculateGroundSpeed();
             handleJumpSignal(groundSpeed);
             handleIsGrounded(groundSpeed);
             handleSpeed(groundSpeed);
+        }
+
+        private void handleCeiled()
+        {
+            if (_ceilingSensor.IsObjectDetected != _isCeiled)
+            {
+                _isCeiled = _ceilingSensor.IsObjectDetected;
+            }
         }
 
         private void handleSpeed(Vector2 groundSpeed)
@@ -66,8 +72,15 @@ namespace SandboxMoba.Characters
         {
             if (_jumpSignalReceived)
             {
-                Vector3 jumpStartSpeed = Vector3.up * _jumpForce;
-                _rigidbody.velocity = jumpStartSpeed;
+                if (!_isCeiled)
+                {
+                    Vector3 jumpStartSpeed = Vector3.up * _jumpForce;
+                    _rigidbody.velocity = jumpStartSpeed;
+                }
+                else
+                {
+                    stopJumping();
+                }
             }
         }
 
@@ -78,10 +91,8 @@ namespace SandboxMoba.Characters
                 // character got off from the ground
                 if (_isOnGround)
                 {
+                    stopJumping();
                     _rigidbody.velocity = new Vector3(groundSpeed.x, _rigidbody.velocity.y, groundSpeed.y);
-                    // if char has jumped
-                    _jumpSignalReceived = false;
-                    _animator.SetIsJumping(false);
                 }
                 else // character grounded
                 {
@@ -90,6 +101,12 @@ namespace SandboxMoba.Characters
                 _isOnGround = _groundSensor.IsObjectDetected;
                 _animator.SetInAir(!_isOnGround);
             }
+        }
+
+        private void stopJumping()
+        {
+            _jumpSignalReceived = false;
+            _animator.SetIsJumping(false);
         }
 
         private void Update()
