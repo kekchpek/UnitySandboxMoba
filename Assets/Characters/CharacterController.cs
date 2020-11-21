@@ -18,7 +18,7 @@ namespace SandboxMoba.Characters
 
         private Vector2 _currentSpeedDir;
         private Vector2 _targetSpeedDir;
-        private bool _jumpSignalReceived;
+        private bool _isJumping;
         private bool _isOnGround;
         private bool _isCeiled;
 
@@ -70,7 +70,7 @@ namespace SandboxMoba.Characters
 
         private void handleJumpSignal(Vector2 groundSpeed)
         {
-            if (_jumpSignalReceived)
+            if (_isJumping)
             {
                 if (!_isCeiled)
                 {
@@ -105,7 +105,7 @@ namespace SandboxMoba.Characters
 
         private void stopJumping()
         {
-            _jumpSignalReceived = false;
+            _isJumping = false;
             _animator.SetIsJumping(false);
         }
 
@@ -123,7 +123,7 @@ namespace SandboxMoba.Characters
         {
             if (_isOnGround)
             {
-                _jumpSignalReceived = true;
+                _isJumping = true;
                 _animator.SetIsJumping(true);
             }
         }
