@@ -8,7 +8,7 @@ namespace SandboxMoba.Characters
     {
         [SerializeField] private AbstractCharacterAnimator _animator;
         [SerializeField] private AbstractCameraController _cameraController;
-        [SerializeField] private GroundSensor _groundSensor;
+        [SerializeField] private Sensor _groundSensor;
         [SerializeField] private Rigidbody _rigidbody;
 
         [SerializeField] private float _jumpForce = 5f;
@@ -73,7 +73,7 @@ namespace SandboxMoba.Characters
 
         private void handleIsGrounded(Vector2 groundSpeed)
         {
-            if (_groundSensor.IsGrounded != _isOnGround)
+            if (_groundSensor.IsObjectDetected != _isOnGround)
             {
                 // character got off from the ground
                 if (_isOnGround)
@@ -87,7 +87,7 @@ namespace SandboxMoba.Characters
                 {
 
                 }
-                _isOnGround = _groundSensor.IsGrounded;
+                _isOnGround = _groundSensor.IsObjectDetected;
                 _animator.SetInAir(!_isOnGround);
             }
         }

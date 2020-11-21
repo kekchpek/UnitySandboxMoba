@@ -130,8 +130,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3563589}
-  - component: {fileID: 3563591}
   - component: {fileID: 3563590}
+  - component: {fileID: 3563591}
   m_Layer: 0
   m_Name: GroundSensor
   m_TagString: Untagged
@@ -176,9 +176,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3563588}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef46160ceeb9b074994bd9aabc181d42, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b098d61d5061df439c4b13c56125598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _layersToDetect: 09000000
 --- !u!1 &14901071
 GameObject:
   m_ObjectHideFlags: 0
