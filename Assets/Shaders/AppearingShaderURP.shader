@@ -160,7 +160,7 @@
                 return output;
             }
 
-            float4 surfaceColor(SurfaceInput input)
+            float4 surfaceColor(SurfaceInput input, float3 emission, float4 colorArg)
             {
                 
                 // Surface data contains albedo, metallic, specular, smoothness, occlusion, emission and alpha
@@ -192,7 +192,7 @@
                 // BRDFData holds energy conserving diffuse and specular material reflections and its roughness.
                 // It's easy to plugin your own shading fuction. You just need replace LightingPhysicallyBased function
                 // below with your own.
-                half4 alb = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv) * _Color;
+                half4 alb = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv) * colorArg;
                 BRDFData brdfData;
                 InitializeBRDFData(alb, _MetallicVal, surfaceData.specular, _SmoothnessVal, surfaceData.alpha, brdfData);
 
@@ -236,7 +236,7 @@
                 }
             #endif
                 // Emission
-                color += surfaceData.emission;
+                color += emission;
 
                 float fogFactor = input.positionWSAndFogFactor.w;
 
@@ -259,14 +259,14 @@
             float4 frag(Varyings IN) : SV_Target
             {
                 // position of the rendering pixel in local coordinates
-                float3 localPos = TransformObjectToWorld(IN.pos) + _AppearingOriginPoint;
+                float3 localPos = TransformObjectToWorld(IN.pos)  - _AppearingOriginPoint;
                 // a total length of the area where pixels should be
                 float length = (_MaxMeshY - _MinMeshY);
 
                 float4 q = _AppearingRotationQuaternion;
                 float4 q_ = float4(-q.x, -q.y, -q.z, q.w);
                 float4 pos = float4(localPos, 0);
-                float4 rotatedPos = hamiltonProduct(hamiltonProduct(q, pos), q_);
+                float4 rotatedPos = hamiltonProduct(hamiltonProduct(q_, pos), q);
                 // position of the rendering pixel relatively the length
                 float level = rotatedPos.y - _MinMeshY;
 
@@ -280,16 +280,13 @@
                 clip(  level - (min - 0.5 * borderRange)  );
                 clip(  (max + 0.5 * borderRange) - level  );
 
-                float4 col = surfaceColor(IN.surfaceInput);
-                float3 emission = _Emission;
+                float4 col = surfaceColor(IN.surfaceInput, _Emission, _Color);
 
                 float tmp = min + borderRange * 0.5;
-                if (level < tmp) col = _BorderColor;
-                if (level < tmp) emission = _BorderEmission * _BorderColor.rgb;
+                if (level < tmp) col = surfaceColor(IN.surfaceInput, _BorderEmission * _BorderColor.rgb, _BorderColor);
 
                 tmp = max - borderRange * 0.5;
-                if (level > tmp) col = _BorderColor;
-                if (level > tmp) emission = _BorderEmission * _BorderColor.rgb;
+                if (level > tmp) col = surfaceColor(IN.surfaceInput, _BorderEmission * _BorderColor.rgb, _BorderColor);
 
                 return col;
             }
