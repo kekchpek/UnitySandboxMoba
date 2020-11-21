@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SpecialBlade
-  m_Shader: {fileID: 4800000, guid: e62a9c18721573f498b33ad7f31f53f1, type: 3}
+  m_Shader: {fileID: 4800000, guid: 599e61d652e3ffc4b97075f08cd1e3e1, type: 3}
   m_ShaderKeywords: _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -59,7 +59,7 @@ Material:
     - _AppearingAxisScale: 1
     - _BorderEmission: 1
     - _BorderRange: 0
-    - _BorderRangePercentage: 0
+    - _BorderRangePercentage: 0.061
     - _BumpScale: 1
     - _ClipBorderMax: 1
     - _ClipBorderMin: 0
@@ -67,24 +67,26 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _Eission: 0.302
-    - _Emission: 0.049
+    - _Emission: 0
     - _GlossMapScale: 0.652
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _MaxMeshY: 10.3
+    - _MaxMeshY: 10.61
     - _Metallic: 1
+    - _MetallicVal: 1
     - _MinMeshY: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 1
+    - _SmoothnessVal: 0.729
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _AppearingOriginPoint: {r: 0, g: 0, b: 0, a: 1}
+    - _AppearingOriginPoint: {r: 0, g: 0, b: 0, a: 0}
     - _AppearingRotationQuaternion: {r: 0, g: 0, b: 0, a: 1}
     - _BorderColor: {r: 0, g: 0.8893423, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}

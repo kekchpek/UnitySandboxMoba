@@ -4,8 +4,8 @@ namespace SandboxMoba.Shaders
 {
     public class AppearingShaderController : MonoBehaviour
     {
-        private const string ORIGIN_POINT_KEY = "";
-        private const string ORIGIN_ROTATION_KEY = "";
+        private const string ORIGIN_POINT_KEY = "_AppearingOriginPoint";
+        private const string ORIGIN_ROTATION_KEY = "_AppearingRotationQuaternion";
 
         [SerializeField] private bool _syncOriginPoint;
         [SerializeField] private bool _syncOriginRotation;
