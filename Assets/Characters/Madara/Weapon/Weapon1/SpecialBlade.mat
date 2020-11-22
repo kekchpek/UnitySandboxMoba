@@ -61,7 +61,7 @@ Material:
     - _BorderRange: 0
     - _BorderRangePercentage: 0.057
     - _BumpScale: 1
-    - _ClipBorderMax: 0.988
+    - _ClipBorderMax: 1
     - _ClipBorderMin: 0
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -71,10 +71,10 @@ Material:
     - _GlossMapScale: 0.652
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _MaxMeshY: 10.61
+    - _MaxMeshY: 9.1
     - _Metallic: 1
     - _MetallicVal: 1
-    - _MinMeshY: 0
+    - _MinMeshY: -0.1
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
