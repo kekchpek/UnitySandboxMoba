@@ -57,17 +57,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _AppearingAxisScale: 1
-    - _BorderEmission: 1
+    - _BorderEmission: 25.5
     - _BorderRange: 0
-    - _BorderRangePercentage: 0.061
+    - _BorderRangePercentage: 0.057
     - _BumpScale: 1
-    - _ClipBorderMax: 1
+    - _ClipBorderMax: 0.988
     - _ClipBorderMin: 0
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _Eission: 0.302
-    - _Emission: 0
+    - _Emission: 0.162
     - _GlossMapScale: 0.652
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -80,15 +80,15 @@ Material:
     - _Parallax: 0.02
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 1
-    - _SmoothnessVal: 0.729
+    - _SmoothnessVal: 0.434
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _AppearingOriginPoint: {r: 0, g: 0, b: 0, a: 0}
+    - _AppearingOriginPoint: {r: 0, g: 0, b: 0, a: 1}
     - _AppearingRotationQuaternion: {r: 0, g: 0, b: 0, a: 1}
-    - _BorderColor: {r: 0, g: 0.8893423, b: 1, a: 1}
+    - _BorderColor: {r: 0.10849059, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FE: {r: 0, g: 0, b: 0, a: 1}

@@ -4,7 +4,7 @@
     { 
         _MainTex("Texture", 2D) = "white" {}
 
-        _Color("Color", Color) = (1,1,1,1)
+        [HDR]_Color("Color", Color) = (1,1,1,1)
         _SmoothnessVal ("Smoothness", Range(0,1)) = 0.5
         _MetallicVal ("Metallic", Range(0,1)) = 0.0
         _Emission ("Emission", Range(0,1)) = 0.0
@@ -16,8 +16,8 @@
 
         _BorderRangePercentage("Border Range Percentage", Range(0,1)) = 0.03
 
-        _BorderColor("BorderColor", Color) = (1,1,1,1)
-        _BorderEmission ("Border Emission", Range(0,1)) = 0.0
+        [HDR]_BorderColor("BorderColor", Color) = (1,1,1,1)
+        _BorderEmission ("Border Emission", float) = 0.0
 
         _AppearingRotationQuaternion("Appearing Axis Rotation", vector) = (0,0,0,1)
         _AppearingOriginPoint("Appearing Origin Point", vector) = (0,0,0)
@@ -80,16 +80,6 @@
                 float2 uvLM                     : TEXCOORD1;
                 float4 positionWSAndFogFactor   : TEXCOORD2; // xyz: positionWS, w: vertex fog factor
                 half3  normalWS                 : TEXCOORD3;
-
-            #if _NORMALMAP
-                half3 tangentWS                 : TEXCOORD4;
-                half3 bitangentWS               : TEXCOORD5;
-            #endif
-
-            #ifdef _MAIN_LIGHT_SHADOWS
-                float4 shadowCoord              : TEXCOORD6; // compute shadow coord per-vertex for the main light
-            #endif
-                float4 positionCS               : SV_POSITION;
             };
 
             struct Varyings
@@ -132,118 +122,39 @@
 
                 // TRANSFORM_TEX is the same as the old shader library.
                 output.uv = TRANSFORM_TEX(input.uv, _MainTex);
-                output.uvLM = input.uvLM.xy * unity_LightmapST.xy + unity_LightmapST.zw;
 
                 output.positionWSAndFogFactor = float4(vertexInput.positionWS, fogFactor);
                 output.normalWS = vertexNormalInput.normalWS;
-
-                // Here comes the flexibility of the input structs.
-                // In the variants that don't have normal map defined
-                // tangentWS and bitangentWS will not be referenced and
-                // GetVertexNormalInputs is only converting normal
-                // from object to world space
-#ifdef _NORMALMAP
-                output.tangentWS = vertexNormalInput.tangentWS;
-                output.bitangentWS = vertexNormalInput.bitangentWS;
-#endif
-
-#ifdef _MAIN_LIGHT_SHADOWS
-                // shadow coord for the main light is computed in vertex.
-                // If cascades are enabled, LWRP will resolve shadows in screen space
-                // and this coord will be the uv coord of the screen space shadow texture.
-                // Otherwise LWRP will resolve shadows in light space (no depth pre-pass and shadow collect pass)
-                // In this case shadowCoord will be the position in light space.
-                output.shadowCoord = GetShadowCoord(vertexInput);
-#endif
-                // We just use the homogeneous clip position from the vertex input
-                output.positionCS = vertexInput.positionCS;
                 return output;
             }
 
             float4 surfaceColor(SurfaceInput input, float3 emission, float4 colorArg)
             {
-                
-                // Surface data contains albedo, metallic, specular, smoothness, occlusion, emission and alpha
-                // InitializeStandarLitSurfaceData initializes based on the rules for standard shader.
-                // You can write your own function to initialize the surface data of your shader.
-                SurfaceData surfaceData;
-                InitializeStandardLitSurfaceData(input.uv, surfaceData);
-
-            #if _NORMALMAP
-                half3 normalWS = TransformTangentToWorld(surfaceData.normalTS,
-                    half3x3(input.tangentWS, input.bitangentWS, input.normalWS));
-            #else
                 half3 normalWS = input.normalWS;
-            #endif
                 normalWS = normalize(normalWS);
-
-            #ifdef LIGHTMAP_ON
-                // Normal is required in case Directional lightmaps are baked
-                half3 bakedGI = SampleLightmap(input.uvLM, normalWS);
-            #else
-                // Samples SH fully per-pixel. SampleSHVertex and SampleSHPixel functions
-                // are also defined in case you want to sample some terms per-vertex.
                 half3 bakedGI = SampleSH(normalWS);
-            #endif
 
                 float3 positionWS = input.positionWSAndFogFactor.xyz;
                 half3 viewDirectionWS = SafeNormalize(GetCameraPositionWS() - positionWS);
 
-                // BRDFData holds energy conserving diffuse and specular material reflections and its roughness.
-                // It's easy to plugin your own shading fuction. You just need replace LightingPhysicallyBased function
-                // below with your own.
                 half4 alb = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv) * colorArg;
                 BRDFData brdfData;
-                InitializeBRDFData(alb, _MetallicVal, surfaceData.specular, _SmoothnessVal, surfaceData.alpha, brdfData);
+                InitializeBRDFData(alb, _MetallicVal, 0, _SmoothnessVal, 0, brdfData);
 
-                // Light struct is provide by LWRP to abstract light shader variables.
-                // It contains light direction, color, distanceAttenuation and shadowAttenuation.
-                // LWRP take different shading approaches depending on light and platform.
-                // You should never reference light shader variables in your shader, instead use the GetLight
-                // funcitons to fill this Light struct.
-            #ifdef _MAIN_LIGHT_SHADOWS
-                // Main light is the brightest directional light.
-                // It is shaded outside the light loop and it has a specific set of variables and shading path
-                // so we can be as fast as possible in the case when there's only a single directional light
-                // You can pass optionally a shadowCoord (computed per-vertex). If so, shadowAttenuation will be
-                // computed.
-                Light mainLight = GetMainLight(input.shadowCoord);
-            #else
                 Light mainLight = GetMainLight();
-            #endif
 
-                // Mix diffuse GI with environment reflections.
-                half3 color = GlobalIllumination(brdfData, bakedGI, surfaceData.occlusion, normalWS, viewDirectionWS);
+                half3 color = GlobalIllumination(brdfData, bakedGI, 0, normalWS, viewDirectionWS);
 
                 // LightingPhysicallyBased computes direct light contribution.
                 color += LightingPhysicallyBased(brdfData, mainLight, normalWS, viewDirectionWS);
 
-                // Additional lights loop
-            #ifdef _ADDITIONAL_LIGHTS
-
-                // Returns the amount of lights affecting the object being renderer.
-                // These lights are culled per-object in the forward renderer
-                int additionalLightsCount = GetAdditionalLightsCount();
-                for (int i = 0; i < additionalLightsCount; ++i)
-                {
-                    // Similar to GetMainLight, but it takes a for-loop index. This figures out the
-                    // per-object light index and samples the light buffer accordingly to initialized the
-                    // Light struct. If _ADDITIONAL_LIGHT_SHADOWS is defined it will also compute shadows.
-                    Light light = GetAdditionalLight(i, positionWS);
-
-                    // Same functions used to shade the main light.
-                    color += LightingPhysicallyBased(brdfData, light, normalWS, viewDirectionWS);
-                }
-            #endif
-                // Emission
                 color += emission;
 
                 float fogFactor = input.positionWSAndFogFactor.w;
 
-                // Mix the pixel color with fogColor. You can optionaly use MixFogColor to override the fogColor
-                // with a custom one.
                 color = MixFog(color, fogFactor);
-                return half4(color, surfaceData.alpha);
+
+                return half4(color, 0);
             }
 
             Varyings vert(Attributes IN)
@@ -280,13 +191,13 @@
                 clip(  level - (min - 0.5 * borderRange)  );
                 clip(  (max + 0.5 * borderRange) - level  );
 
-                float4 col = surfaceColor(IN.surfaceInput, _Emission, _Color);
+                float4 col = surfaceColor(IN.surfaceInput, _Emission * _Color, _Color);
 
                 float tmp = min + borderRange * 0.5;
-                if (level < tmp) col = surfaceColor(IN.surfaceInput, _BorderEmission * _BorderColor.rgb, _BorderColor);
+                if (level < tmp) col = surfaceColor(IN.surfaceInput, _BorderEmission * _BorderColor, _BorderColor);
 
                 tmp = max - borderRange * 0.5;
-                if (level > tmp) col = surfaceColor(IN.surfaceInput, _BorderEmission * _BorderColor.rgb, _BorderColor);
+                if (level > tmp) col = surfaceColor(IN.surfaceInput, _BorderEmission * _BorderColor, _BorderColor);
 
                 return col;
             }
