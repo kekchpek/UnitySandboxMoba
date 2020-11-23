@@ -36,6 +36,7 @@ namespace SandboxMoba.Characters
                 {
                     _appearingValue = 1f;
                     _isAppearing = false;
+                    _appearingController.IsAppearing = false;
                 }
                 if (_appearingValue + _appearingParticlesSpace / _appearingController.BorderRage > 1f)
                     _appearingParticles.Stop();
@@ -49,6 +50,8 @@ namespace SandboxMoba.Characters
                 {
                     _disappearingValue = 1f;
                     _isDisappearing = false;
+                    _appearingController.IsAppearing = false;
+                    _appearingController.IsDisappeared = true;
                     _disappearingParticles.Stop();
                 }
                 _disappearingValue += Time.deltaTime * _appearingSpeed;
@@ -61,10 +64,12 @@ namespace SandboxMoba.Characters
         {
             _isDisappearing = false;
             _isAppearing = true;
+            _appearingController.IsDisappeared = false;
             _appearingParticles.Play();
             _disappearingParticles.Stop();
             _appearingController.MaxBorder = 0;
             _appearingController.MinBorder = 0;
+            _appearingController.IsAppearing = true;
             _appearingParticles.transform.position = Vector3.zero;
             _appearingValue = -(_appearingParticlesSpace / _appearingController.BorderRage);
         }
@@ -73,10 +78,12 @@ namespace SandboxMoba.Characters
         {
             _isDisappearing = true;
             _isAppearing = false;
+            _appearingController.IsDisappeared = false;
             _appearingParticles.Stop();
             _disappearingParticles.Play();
             _appearingController.MaxBorder = 1;
             _appearingController.MinBorder = 0;
+            _appearingController.IsAppearing = true;
             _disappearingParticles.transform.position = Vector3.zero;
             _disappearingValue = 0f;
         }

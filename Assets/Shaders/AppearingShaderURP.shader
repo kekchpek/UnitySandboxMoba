@@ -9,10 +9,13 @@
         _MetallicVal ("Metallic", Range(0,1)) = 0.0
         _Emission ("Emission", Range(0,1)) = 0.0
 
-        _MinMeshY("Min mesh Y", float) = -1
-        _MaxMeshY("Max mesh Y", float) = -1
-        _ClipBorderMax("Clip border max", Range(0, 1)) = 0
-        _ClipBorderMin("Clip border min", Range(0, 1)) = 0
+        [Toggle]_IsAppearing("Is Appearing", float) = 0
+        [Toggle]_IsDisappeared("Is Disappeared", float) = 0
+
+        _MinMeshY("Min Border Range", float) = -1
+        _MaxMeshY("Max Border Range", float) = -1
+        _ClipBorderMax("Appearing border max", Range(0, 1)) = 0
+        _ClipBorderMin("Appearing border min", Range(0, 1)) = 0
 
         _BorderRangePercentage("Border Range Percentage", Range(0,1)) = 0.03
 
@@ -21,6 +24,7 @@
 
         _AppearingRotationQuaternion("Appearing Axis Rotation", vector) = (0,0,0,1)
         _AppearingOriginPoint("Appearing Origin Point", vector) = (0,0,0)
+        _AppearingOriginScale("Appearing Origin Scale", vector) = (0,0,0)
     }
 
 
@@ -47,6 +51,8 @@
             half _SmoothnessVal;
             half _MetallicVal;
             half _Emission;
+            float _IsAppearing;
+            float _IsDisappeared;
             float _MinMeshY;
             float _MaxMeshY;
             float _ClipBorderMax;
@@ -57,6 +63,7 @@
             float _BorderEmission;
             float4 _AppearingRotationQuaternion;
             float3 _AppearingOriginPoint;
+            float3 _AppearingOriginScale;
 
             TEXTURE2D(_MainTex);
             
@@ -170,7 +177,7 @@
             float4 frag(Varyings IN) : SV_Target
             {
                 // position of the rendering pixel in local coordinates
-                float3 localPos = TransformObjectToWorld(IN.pos)  - _AppearingOriginPoint;
+                float3 localPos = (TransformObjectToWorld(IN.pos)  - _AppearingOriginPoint) / _AppearingOriginScale;
                 // a total length of the area where pixels should be
                 float length = (_MaxMeshY - _MinMeshY);
 
@@ -187,17 +194,17 @@
                 float borderRange = length * _BorderRangePercentage;
                 float max = (length + borderRange) * _ClipBorderMax - borderRange * 0.5;
                 float min = (length + borderRange) * _ClipBorderMin - borderRange * 0.5;
-
-                clip(  level - (min - 0.5 * borderRange)  );
-                clip(  (max + 0.5 * borderRange) - level  );
+                
+                clip( (1-_IsDisappeared) * (_IsAppearing * (level - (min - 0.5 * borderRange)) + (1-_IsAppearing) * 1) + _IsDisappeared * -1 );
+                clip( (1-_IsDisappeared) * (_IsAppearing * ((max + 0.5 * borderRange) - level) + (1-_IsAppearing) * 1) + _IsDisappeared * -1 );
 
                 float4 col = surfaceColor(IN.surfaceInput, _Emission * _Color, _Color);
 
                 float tmp = min + borderRange * 0.5;
-                if (level < tmp) col = surfaceColor(IN.surfaceInput, _BorderEmission * _BorderColor, _BorderColor);
+                if (level < tmp && _IsAppearing == 1) col = surfaceColor(IN.surfaceInput, _BorderEmission * _BorderColor, _BorderColor);
 
                 tmp = max - borderRange * 0.5;
-                if (level > tmp) col = surfaceColor(IN.surfaceInput, _BorderEmission * _BorderColor, _BorderColor);
+                if (level > tmp && _IsAppearing == 1) col = surfaceColor(IN.surfaceInput, _BorderEmission * _BorderColor, _BorderColor);
 
                 return col;
             }

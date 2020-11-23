@@ -8,8 +8,11 @@ namespace SandboxMoba.Shaders
 #endif
     public class AppearingShaderController : MonoBehaviour
     {
+        private const string IS_APPEARING_KEY = "_IsAppearing";
+        private const string IS_DISAPPEARED_KEY = "_IsDisappeared";
         private const string ORIGIN_POINT_KEY = "_AppearingOriginPoint";
         private const string ORIGIN_ROTATION_KEY = "_AppearingRotationQuaternion";
+        private const string ORIGIN_SCALE_KEY = "_AppearingOriginScale";
         private const string MAX_BORDER_KEY = "_ClipBorderMax";
         private const string MIN_BORDER_KEY = "_ClipBorderMin";
         private const string MIN_BORDER_RANGE_KEY = "_MinMeshY";
@@ -17,11 +20,13 @@ namespace SandboxMoba.Shaders
 
         [SerializeField] private bool _syncOriginPoint;
         [SerializeField] private bool _syncOriginRotation;
+        [SerializeField] private bool _syncOriginScale;
         [SerializeField] private Renderer[] _renderersToControl;
 
         private Material[] _materialsToControl;
         private Vector3 _previouPos;
         private Quaternion _previousRotation;
+        private Vector3 _previousScale;
 
         private bool _minBorderAnimationLooped;
         private float _minBorderAnimationTotalTime;
@@ -34,6 +39,46 @@ namespace SandboxMoba.Shaders
 
         private float _minBorderRange;
         private float _maxBorderRange;
+
+        public bool IsAppearing
+        {
+            get
+            {
+                if (!IsMaterialsCached)
+                    return false;
+                return _materialsToControl[0].GetFloat(IS_APPEARING_KEY) == 0 ? false : true;
+            }
+            set
+            {
+                if (!IsMaterialsCached)
+                    return;
+                float val = value ? 1f : 0f;
+                foreach (Material mat in _materialsToControl)
+                {
+                    mat.SetFloat(IS_APPEARING_KEY, val);
+                }
+            }
+        }
+
+        public bool IsDisappeared
+        {
+            get
+            {
+                if (!IsMaterialsCached)
+                    return false;
+                return _materialsToControl[0].GetFloat(IS_DISAPPEARED_KEY) == 0 ? false : true;
+            }
+            set
+            {
+                if (!IsMaterialsCached)
+                    return;
+                float val = value ? 1f : 0f;
+                foreach (Material mat in _materialsToControl)
+                {
+                    mat.SetFloat(IS_DISAPPEARED_KEY, val);
+                }
+            }
+        }
 
         public bool IsMaterialsCached => _materialsToControl != null && _materialsToControl.Length > 0;
 
@@ -74,7 +119,7 @@ namespace SandboxMoba.Shaders
             }
             get
             {
-                if (_materialsToControl == null || _materialsToControl.Length == 0)
+                if (!IsMaterialsCached)
                     return 0f;
                 return _materialsToControl[0].GetFloat(MAX_BORDER_KEY);
             }
@@ -92,7 +137,7 @@ namespace SandboxMoba.Shaders
             }
             get
             {
-                if (_materialsToControl == null || _materialsToControl.Length == 0)
+                if (!IsMaterialsCached)
                     return 0f;
                 return _materialsToControl[0].GetFloat(MIN_BORDER_KEY);
             }
@@ -135,10 +180,11 @@ namespace SandboxMoba.Shaders
             if (Application.isEditor && !Application.isPlaying && !SyncInEditor)
                 return;
 #endif
-            if (!_syncOriginPoint && !_syncOriginRotation)
+            if (!_syncOriginPoint && !_syncOriginRotation && !_syncOriginScale)
                 return;
             Vector3 position = transform.position;
             Quaternion rotation = transform.rotation;
+            Vector3 scale = transform.lossyScale;
             foreach (Material mat in _materialsToControl)
             {
 
@@ -150,8 +196,13 @@ namespace SandboxMoba.Shaders
                 {
                     mat.SetVector(ORIGIN_ROTATION_KEY, new Vector4(rotation.x, rotation.y, rotation.z, rotation.w));
                 }
+                if (_syncOriginScale && _previousScale != scale)
+                {
+                    mat.SetVector(ORIGIN_SCALE_KEY, scale);
+                }
             }
 
+            _previousScale = scale;
             _previousRotation = rotation;
             _previouPos = position;
 

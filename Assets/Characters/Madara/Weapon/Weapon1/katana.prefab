@@ -132,6 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _syncOriginPoint: 1
   _syncOriginRotation: 1
+  _syncOriginScale: 1
   _renderersToControl:
   - {fileID: 9037127026046951194}
   - {fileID: 4215426860546448676}
@@ -418,9 +419,9 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 1
-  moveWithCustomTransform: {fileID: 0}
-  scalingMode: 1
+  moveWithTransform: 2
+  moveWithCustomTransform: {fileID: 1325473734925160096}
+  scalingMode: 0
   randomSeed: 0
   InitialModule:
     serializedVersion: 3
@@ -4250,7 +4251,7 @@ ParticleSystem:
     textureMode: 0
     ribbonCount: 1
     shadowBias: 0.5
-    worldSpace: 1
+    worldSpace: 0
     dieWithParticles: 1
     sizeAffectsWidth: 1
     sizeAffectsLifetime: 0
@@ -5172,9 +5173,9 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 1
-  moveWithCustomTransform: {fileID: 0}
-  scalingMode: 1
+  moveWithTransform: 2
+  moveWithCustomTransform: {fileID: 1325473734925160096}
+  scalingMode: 0
   randomSeed: 0
   InitialModule:
     serializedVersion: 3
