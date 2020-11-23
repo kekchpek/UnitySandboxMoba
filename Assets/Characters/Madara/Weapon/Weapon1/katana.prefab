@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6932288392124620026}
   - component: {fileID: 3828940992072121600}
   - component: {fileID: 5437649924507581423}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: handgrip1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 1325473734925160096}
   - component: {fileID: 328966648}
   - component: {fileID: 8864012772813831688}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: katana
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -166,7 +166,7 @@ GameObject:
   - component: {fileID: 3347476584693817917}
   - component: {fileID: 5557558339115961134}
   - component: {fileID: 4215426860546448676}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: blade base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,7 +245,7 @@ GameObject:
   - component: {fileID: 6315864656372890977}
   - component: {fileID: 3386124242800545048}
   - component: {fileID: 468111736106030380}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: handgrip2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -324,7 +324,7 @@ GameObject:
   - component: {fileID: 5671225872281787905}
   - component: {fileID: 7651352626272882584}
   - component: {fileID: 2525148095531175654}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Disappearing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5078,7 +5078,7 @@ GameObject:
   - component: {fileID: 7688942688752329040}
   - component: {fileID: 1599600194538785075}
   - component: {fileID: 3188126670703367526}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Appearing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9832,7 +9832,7 @@ GameObject:
   - component: {fileID: 1972817264875130490}
   - component: {fileID: 8196510342249679929}
   - component: {fileID: 9037127026046951194}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: blade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9911,7 +9911,7 @@ GameObject:
   - component: {fileID: 7806834866601205740}
   - component: {fileID: 6204633441694771581}
   - component: {fileID: 4739886865874619600}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: tsuba
   m_TagString: Untagged
   m_Icon: {fileID: 0}

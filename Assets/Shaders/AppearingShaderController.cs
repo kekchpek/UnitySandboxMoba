@@ -132,7 +132,7 @@ namespace SandboxMoba.Shaders
         private void Update()
         {
 #if UNITY_EDITOR
-            if (Application.isEditor && !SyncInEditor)
+            if (Application.isEditor && !Application.isPlaying && !SyncInEditor)
                 return;
 #endif
             if (!_syncOriginPoint && !_syncOriginRotation)
