@@ -71,10 +71,14 @@ Material:
     - _GlossMapScale: 0.652
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _MaxMeshY: 9.6
+    - _IsAppeared: 0
+    - _IsAppearing: 0
+    - _IsClipping: 0
+    - _IsDisappeared: 0
+    - _MaxMeshY: 9.1
     - _Metallic: 1
     - _MetallicVal: 1
-    - _MinMeshY: -0.5
+    - _MinMeshY: -0.1
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02

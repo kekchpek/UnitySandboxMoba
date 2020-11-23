@@ -21,15 +21,6 @@ namespace SandboxMoba.Characters
 
         private void Update()
         {
-            if (UnityEngine.Input.GetKeyDown("q"))
-            {
-                Appear();
-            }
-            if (UnityEngine.Input.GetKeyDown("e"))
-            {
-                Disappear();
-            }
-
             if (_isAppearing)
             {
                 if (_appearingValue > 1f)

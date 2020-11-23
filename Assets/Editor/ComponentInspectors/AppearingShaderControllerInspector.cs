@@ -21,17 +21,22 @@ namespace SandboxMoba.Editor.ComponentInspectors
 
             target.SyncInEditor = EditorGUILayout.Toggle("Sync in editor", target.SyncInEditor);
 
-            float minBorder = target.MinBorder;
-            float newMinBorder = EditorGUILayout.Slider("Min border", minBorder, 0f, 1f);
-            if (newMinBorder != minBorder && target.IsMaterialsCached)
+            float newMinBorder = EditorGUILayout.Slider("Min border", target.MinBorder, 0f, 1f);
+            if (newMinBorder != target.MinBorder && target.IsMaterialsCached)
                 target.MinBorder = newMinBorder;
-            minBorder = newMinBorder;
 
-            float maxBorder = target.MaxBorder;
-            float newMaxBorder = EditorGUILayout.Slider("Max border", maxBorder, 0f, 1f);
-            if (newMaxBorder != maxBorder && target.IsMaterialsCached)
+            float newMaxBorder = EditorGUILayout.Slider("Max border", target.MaxBorder, 0f, 1f);
+            if (newMaxBorder != target.MaxBorder && target.IsMaterialsCached)
                 target.MaxBorder = newMaxBorder;
-            maxBorder = newMaxBorder;
+
+            bool newIsAppearing = EditorGUILayout.Toggle("Is Appearing", target.IsAppearing);
+            if (newIsAppearing != target.IsAppearing && target.IsMaterialsCached)
+                target.IsAppearing = newIsAppearing;
+
+            bool newIsDisappeared = EditorGUILayout.Toggle("Is Disappeared", target.IsDisappeared);
+            if (newIsDisappeared != target.IsDisappeared && target.IsMaterialsCached)
+                target.IsDisappeared = newIsDisappeared;
+
         }
     }
 

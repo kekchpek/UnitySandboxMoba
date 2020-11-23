@@ -22,8 +22,8 @@ namespace SandboxMoba.Shaders
         [SerializeField] private bool _syncOriginRotation;
         [SerializeField] private bool _syncOriginScale;
         [SerializeField] private Renderer[] _renderersToControl;
+        [HideInInspector][SerializeField] private Material[] _materialsToControl;
 
-        private Material[] _materialsToControl;
         private Vector3 _previouPos;
         private Quaternion _previousRotation;
         private Vector3 _previousScale;
