@@ -10,6 +10,8 @@ namespace SandboxMoba.Characters
 
         public abstract void SetIsJumping(bool isJumping);
 
+        public abstract void ChangeMode(CharacterMode newMode);
+
     }
 
 }

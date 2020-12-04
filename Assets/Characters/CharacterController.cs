@@ -1,5 +1,6 @@
 ﻿using SandboxMoba.Characters.Sensors;
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace SandboxMoba.Characters
@@ -15,12 +16,14 @@ namespace SandboxMoba.Characters
         [SerializeField] private float _jumpForce = 5f;
         [SerializeField] private float _speed = 1f;
         [SerializeField] private float _acceleration = 1f;
+        [SerializeField] private float _changeModeTimeSec = 1f;
 
         private Vector2 _currentSpeedDir;
         private Vector2 _targetSpeedDir;
         private bool _isJumping;
         private bool _isOnGround;
         private bool _isCeiled;
+        private CharacterMode _mode = CharacterMode.SIMPLE;
 
         public override void Rotate(Vector2 angles)
         {
@@ -52,7 +55,7 @@ namespace SandboxMoba.Characters
 
         private void handleSpeed(Vector2 groundSpeed)
         {
-            if (_isOnGround)
+            if (_isOnGround && _mode != CharacterMode.CHANGING_MODE)
             {
                 Vector2 accelerationVector = _targetSpeedDir - _currentSpeedDir;
                 float momentAcceleration = _acceleration * Time.fixedDeltaTime;
@@ -138,6 +141,23 @@ namespace SandboxMoba.Characters
             resultSpeed.x = resultSpeed.x * Mathf.Cos(angle) - resultSpeed.y * Mathf.Sin(angle);
             resultSpeed.y = tmpX * Mathf.Sin(angle) + resultSpeed.y * Mathf.Cos(angle);
             return resultSpeed;
+        }
+
+        public override void SwitchMode()
+        {
+            if (_mode == CharacterMode.CHANGING_MODE)
+                return;
+            this.StartCoroutine(switchModeCoroutine());
+        }
+
+        private IEnumerator switchModeCoroutine()
+        {
+            CharacterMode modeToSet = _mode == CharacterMode.SIMPLE ? CharacterMode.BATTLE : CharacterMode.SIMPLE;
+            _mode = CharacterMode.CHANGING_MODE;
+            _animator.ChangeMode(CharacterMode.CHANGING_MODE);
+            yield return new WaitForSeconds(_changeModeTimeSec);
+            _mode = modeToSet;
+            _animator.ChangeMode(modeToSet);
         }
     }
 }

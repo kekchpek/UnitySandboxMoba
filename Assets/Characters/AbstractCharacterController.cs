@@ -12,6 +12,8 @@ namespace SandboxMoba.Characters
         /// <param name="angles">(yaw, pitch)</param>
         public abstract void Rotate(Vector2 angles);
 
+        public abstract void SwitchMode();
+
         public abstract void Jump();
 
     }

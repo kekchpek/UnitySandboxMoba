@@ -27,6 +27,7 @@ namespace SandboxMoba.Input
             applySpeed();
             applyJump();
             applyCameraMoving();
+            applySwitchMode();
         }
 
         private void applySpeed()
@@ -65,6 +66,14 @@ namespace SandboxMoba.Input
             delta.x *= _characterRotationYawModifier;
             delta.y *= _inversePitchRotation ? _characterRotationPitchModifier : -_characterRotationPitchModifier;
             _characterController.Rotate(delta);
+        }
+
+        private void applySwitchMode()
+        {
+            if (UnityEngine.Input.GetKeyDown("e"))
+            {
+                _characterController.SwitchMode();
+            }
         }
 
     }
