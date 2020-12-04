@@ -517,7 +517,7 @@ BlendTree:
   m_Name: Ground Animations
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: df7fd3c540291474ea1f64d1505a73bd,
+    m_Motion: {fileID: -203655887218126122, guid: 334cee85cec9b564285af547e78bed33,
       type: 3}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
@@ -526,52 +526,34 @@ BlendTree:
     m_DirectBlendParameter: vertical_speed
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: e8e4eff1e7be1574e89ae3fe82ee1b23,
+    m_Motion: {fileID: -203655887218126122, guid: a22051069e3027b4c86f2b5a946eef59,
       type: 3}
-    m_Threshold: 0.16666667
-    m_Position: {x: -0.5, y: -0.5}
-    m_TimeScale: 1
-    m_CycleOffset: 0
-    m_DirectBlendParameter: vertical_speed
-    m_Mirror: 0
-  - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: c076507e2c18d1d479c90783def89df8,
-      type: 3}
-    m_Threshold: 0.33333334
-    m_Position: {x: 0.5, y: -0.5}
-    m_TimeScale: 1
-    m_CycleOffset: 0
-    m_DirectBlendParameter: vertical_speed
-    m_Mirror: 0
-  - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 8438407b58e47fa44843a854573767d7,
-      type: 3}
-    m_Threshold: 0.5
+    m_Threshold: 0.25
     m_Position: {x: -0.5, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: vertical_speed
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: f52e0587e65bdb547bbc4e92431b36ec,
+    m_Motion: {fileID: -203655887218126122, guid: be5c44c819151be4db1663d3c3b65644,
       type: 3}
-    m_Threshold: 0.6666667
+    m_Threshold: 0.5
     m_Position: {x: 0.5, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: vertical_speed
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 8e7a11a88df84fe4eb81b1b8e6703778,
+    m_Motion: {fileID: -203655887218126122, guid: 33d7d4aa5e4654e4ebb60bcbe36de970,
       type: 3}
-    m_Threshold: 0.8333333
+    m_Threshold: 0.75
     m_Position: {x: 0, y: -0.5}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: vertical_speed
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 33e4969086a8d9d44a4b80f7effc7dd0,
+    m_Motion: {fileID: -203655887218126122, guid: 05cf7d7efc8810e4a89eae12389ab2b9,
       type: 3}
     m_Threshold: 1
     m_Position: {x: 0, y: 0.5}
@@ -629,37 +611,37 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: horizontal_speed
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: is_in_air
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: is_jumping
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: is_fight_mode
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: is_change_mode
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: RunVertical
